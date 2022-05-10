@@ -14,6 +14,7 @@ typedef struct
 void copy_array(unsigned short destination[MAX_ARRAY_SIZE], unsigned short source[MAX_ARRAY_SIZE], unsigned char size);
 results selection_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size);
 results insertion_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size);
+void calculateH(unsigned int destination[MAX_ARRAY_SIZE],unsigned char size);
 results shell_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size);
 
 int main(void)
@@ -24,15 +25,13 @@ int main(void)
     unsigned short array[MAX_ARRAY_SIZE],ord[MAX_ARRAY_SIZE];
     unsigned char i1,n,i2,size;
     results res;
-    scanf("%hhu",&n);
+    fscanf(file,"%hhu",&n);
     for(i1 = 0; i1 < n; i1++)
     {
         printf("Sequenza %u:\n",i1 + 1u);
-        scanf("%hhu",&size);
+        fscanf(file,"%hhu",&size);
         for(i2 = 0; i2 < size; i2++)
-        {
-            scanf("%hu",&array[i2]);
-        }
+            fscanf(file,"%hu",&array[i2]);
         copy_array(array, ord, size);
         res = selection_sort(ord,size);
         printf("Selection sort:\n"
@@ -82,8 +81,14 @@ results selection_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
     {
         for(i2 = i1; i2 < size; i2++)
         {
-
+            if(copy[i2] > array[i1])
+            {
+                array[i1] = copy[i2];
+                res.swaps++;
+            }
+            res.int_iterations[i1]++;
         }
+        res.ext_iterations++;
     }
 
     return res;
@@ -106,9 +111,28 @@ results insertion_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
     return res;
 }
 
+//
+void calculateH(unsigned int destination[MAX_ARRAY_SIZE],unsigned char size)
+{
+    unsigned char i;
+    destination[0] = 1;
+    for(i = 1; i < size; i += 2)
+        destination[i] = 8 * (2 << (i - 1)) - 6 * (2 << (i/2)) + 1;
+    for(i = 2; i < size; i += 2)
+        destination[i] = 9 * (2 << (i - 1)) - 9 * (2 << ((i - 1)/2)) + 1;
+}
+
 results shell_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
 {
     results res;
+    unsigned int h[MAX_ARRAY_SIZE];
+    unsigned char i1,i2;
+    calculateH(h,MAX_ARRAY_SIZE);
+    for(i1 = 0; i1 < size; i1++)
+    {
+
+    }
+
 
     return res;
 }
