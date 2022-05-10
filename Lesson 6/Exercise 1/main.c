@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define FILE_LOG            "../corse.txt"
+#define FILE_LOG            "corse.txt"
 #define MAX_STRING_LENGTH   (30 + 1)
 #define OFFSET_YEAR         2010
 
