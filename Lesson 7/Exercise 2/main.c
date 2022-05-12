@@ -26,21 +26,27 @@ int main(void)
     unsigned char i1,n,i2,size;
     results res;
     fscanf(file,"%hhu",&n);
-    for(i1 = 0; i1 < 1; i1++)
+    for(i1 = 0; i1 < n; i1++)
     {
-        printf("Sequenza %u:\n",i1 + 1u);
         fscanf(file,"%hhu",&size);
+        printf("Sequenza %u di %hhu elementi:\n",i1 + 1u,size);
         for(i2 = 0; i2 < size; i2++)
             fscanf(file,"%hu",&array[i2]);
+
+        copy_array(ord, array, size);
+        for (i2 = 0; i2 < size; i2++) {
+            printf("[%hu]", ord[i2]);
+        }
+
         copy_array(ord, array, size);
         res = selection_sort(ord,size);
-        printf("Selection sort:\n"
+        printf("\n\nSelection sort:\n"
                "\t%hhu scambi.\n"
                "\t%hhu iterazioni del ciclo esterno:\n",
-        res.swaps,res.ext_iterations);
-        /*for(i2 = 0; i2 < res.ext_iterations; i2++)
+               res.swaps,res.ext_iterations);
+        for(i2 = 0; i2 < res.ext_iterations; i2++)
             printf("\t\tIterazione %d: %hhu iterazioni nel ciclo interno.\n",
-                   i2 + 1,res.int_iterations[i2]);*/
+                   i2 + 1,res.int_iterations[i2]);
         for (i2 = 0; i2 < size; i2++)
         {
             printf("[%d]",ord[i2]);
@@ -52,9 +58,9 @@ int main(void)
                "\t%hhu scambi.\n"
                "\t%hhu iterazioni del ciclo esterno:\n",
                res.swaps,res.ext_iterations);
-        /*for(i2 = 0; i2 < res.ext_iterations; i2++)
+        for(i2 = 0; i2 < res.ext_iterations; i2++)
             printf("\t\tIterazione %d: %hhu iterazioni nel ciclo interno.\n",
-                   i2 + 1,res.int_iterations[i2]);*/
+                   i2 + 1,res.int_iterations[i2]);
         for (i2 = 0; i2 < size; i2++)
         {
             printf("[%d]",ord[i2]);
@@ -66,9 +72,9 @@ int main(void)
                "\t%hhu scambi.\n"
                "\t%hhu iterazioni del ciclo esterno:\n",
                res.swaps,res.ext_iterations);
-        /*for(i2 = 0; i2 < res.ext_iterations; i2++)
+        for(i2 = 0; i2 < res.ext_iterations; i2++)
             printf("\t\tIterazione %d: %hhu iterazioni nel ciclo interno.\n",
-                   i2 + 1,res.int_iterations[i2]);*/
+                   i2 + 1,res.int_iterations[i2]);
         for (i2 = 0; i2 < size; i2++)
         {
             printf("[%d]",ord[i2]);
@@ -80,22 +86,22 @@ int main(void)
 
 void copy_array(unsigned short destination[MAX_ARRAY_SIZE], unsigned short source[MAX_ARRAY_SIZE], unsigned char size)
 {
-    memcpy(destination,source,size / sizeof(unsigned short));
+    memcpy(destination,source,size * sizeof(unsigned short));
 }
 
 results selection_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
 {
     results res = {0};
     unsigned char i1,i2;
-    unsigned short copy[MAX_ARRAY_SIZE];
-    copy_array(copy, array, size);
     for(i1 = 0; i1 < size; i1++)
     {
-        for(i2 = i1; i2 < size; i2++)
+        for(i2 = i1 + 1; i2 < size; i2++)
         {
-            if(copy[i2] > array[i1])
+            if(array[i1] > array[i2])
             {
-                array[i1] = copy[i2];
+                unsigned short tmp = array[i1];
+                array[i1] = array[i2];
+                array[i2] = tmp;
                 res.swaps++;
             }
             res.int_iterations[i1]++;
@@ -109,15 +115,19 @@ results selection_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
 results insertion_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
 {
     results res = {0};
-    short i1,i2;
+    unsigned char i1,i2,i3;
     for(i1 = 1; i1 < size; i1++)
     {
-        for(i2 = ((short)(i1 - 1)); i2 >= 0 && array[i1] < array[i2]; i2--)
+        unsigned short tmp = array[i1];
+        for(i2 = 0; i2 < i1 && array[i1] > array[i2]; i2++);
+        for(i3 = i1; i3 > i2; i3--)
         {
-            array[i2 + 1] = array[i2];
+            array[i3] = array[i3 - 1];
             res.swaps++;
             res.int_iterations[i1 - 1]++;
         }
+        array[i2] = tmp;
+        res.swaps++;
     }
     res.ext_iterations = i1 - 1;
     return res;
@@ -135,9 +145,9 @@ void calculateH(unsigned int destination[MAX_ARRAY_SIZE],unsigned char size)
 
 results shell_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
 {
-    results res;
+    results res = {0};
     unsigned int h[MAX_ARRAY_SIZE];
-    unsigned char i1,i2,hi;
+    unsigned char i1,i2,i3,i4,hi;
     unsigned int offset;
     calculateH(h,size / 3);
     for(hi = size - 1; h[hi] > size/3; hi--);
@@ -145,19 +155,21 @@ results shell_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
     for(hi++; hi > 0; hi--)
     {
         offset = h[hi - 1];
-        printf("Using h value %u.\n",offset);
-        for(i1 = offset; i1 < size; i1 += offset)
+        for(i1 = 0; i1 < offset; i1++)
         {
-            for(i2 = i1 - offset + 1; i2 < i1; i2++)
+            for(i2 = i1; i2 < size; i2 += offset)
             {
-                if(array[i2 - 1] < array[i2])
+                unsigned short tmp = array[i2];
+                for(i3 = i1; i3 < i2 && array[i2] > array[i3]; i3 += offset);
+                for(i4 = i2; i4 > i3; i4 -= offset)
                 {
-                    unsigned short tmp = array[i2 - 1];
-                    array[i2 - 1] = array[i2];
-                    array[i2] = tmp;
+                    array[i4] = array[i4 - offset];
                     res.swaps++;
                 }
+                array[i3] = tmp;
+                res.int_iterations[(i2 - i1) / offset]++;
             }
+            res.ext_iterations++;
         }
     }
 
