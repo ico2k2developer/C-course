@@ -3,7 +3,7 @@
 #include <string.h>
 
 #define FILE_LOG            "corse.txt"
-#define MAX_STRING_LENGTH   (30 + 1)
+#define MAX_STRING_LENGTH   (50 + 1)
 #define OFFSET_YEAR         2010
 
 #define MODE_INTERVAL           "date"
@@ -113,8 +113,11 @@ comando_e leggiComando(void)
     char buffer[MAX_MODE_LENGTH];
     do
     {
+        /*
         fgets(buffer,MAX_MODE_LENGTH,stdin);
         buffer[strlen(buffer) - 1] = '\0';
+         */
+        scanf("%s",buffer);
         if(strcmp(buffer,MODE_INTERVAL) == 0)
         {
             found = 1;
@@ -181,8 +184,11 @@ void menuParola(data* logs,unsigned short count,comando_e mode)
         {
             char buffer[MAX_STRING_LENGTH];
             printf("Inserisci il nome della fermata di partenza: ");
+            scanf("%s",&buffer);
+            /*
             fgets(buffer,MAX_STRING_LENGTH,stdin);
-            buffer[strlen(buffer) - 1] = '\0';
+            buffer[strlen(buffer) - 1] = '\0';*/
+            fputc('\n',stdout);
             for(i = 0; i < count; i++)
             {
                 if(strcmp(buffer,logs[i].start) == 0)
@@ -194,8 +200,11 @@ void menuParola(data* logs,unsigned short count,comando_e mode)
         {
             char buffer[MAX_STRING_LENGTH];
             printf("Inserisci il nome della fermata di arrivo: ");
+            scanf("%s",&buffer);
+            /*
             fgets(buffer,MAX_STRING_LENGTH,stdin);
-            buffer[strlen(buffer) - 1] = '\0';
+            buffer[strlen(buffer) - 1] = '\0';*/
+            fputc('\n',stdout);
             for(i = 0; i < count; i++)
             {
                 if(strcmp(buffer,logs[i].destination) == 0)

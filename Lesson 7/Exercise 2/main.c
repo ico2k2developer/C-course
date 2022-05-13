@@ -149,9 +149,9 @@ results shell_sort(unsigned short array[MAX_ARRAY_SIZE],unsigned char size)
     unsigned int h[MAX_ARRAY_SIZE];
     unsigned char i1,i2,i3,i4,hi;
     unsigned int offset;
-    calculateH(h,size / 3);
-    for(hi = size - 1; h[hi] > size/3; hi--);
-    hi++;
+    unsigned char hsize = size / 3;
+    calculateH(h,hsize);
+    for(hi = hsize - 1; h[hi] > hsize; hi--);
     for(hi++; hi > 0; hi--)
     {
         offset = h[hi - 1];
