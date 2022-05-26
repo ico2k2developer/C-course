@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(Exercise1 C)
+project(C-course C)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -27,3 +27,6 @@ add_subdirectory("Lesson 6/Exercise 1")
 
 add_subdirectory("Lesson 7/Exercise 1")
 add_subdirectory("Lesson 7/Exercise 2")
+
+add_subdirectory("Lesson 8/Exercise 1")
+add_subdirectory("Lesson 8/Exercise 2")
