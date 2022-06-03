@@ -34,9 +34,6 @@ int main(void)
             fscanf(file,"%hu",&array[i2]);
 
         copy_array(ord, array, size);
-        for (i2 = 0; i2 < size; i2++) {
-            printf("[%hu]", ord[i2]);
-        }
 
         copy_array(ord, array, size);
         res = selection_sort(ord,size);
@@ -47,10 +44,6 @@ int main(void)
         for(i2 = 0; i2 < res.ext_iterations; i2++)
             printf("\t\tIterazione %d: %hhu iterazioni nel ciclo interno.\n",
                    i2 + 1,res.int_iterations[i2]);
-        for (i2 = 0; i2 < size; i2++)
-        {
-            printf("[%d]",ord[i2]);
-        }
 
         copy_array(ord, array, size);
         res = insertion_sort(ord,size);
@@ -61,10 +54,6 @@ int main(void)
         for(i2 = 0; i2 < res.ext_iterations; i2++)
             printf("\t\tIterazione %d: %hhu iterazioni nel ciclo interno.\n",
                    i2 + 1,res.int_iterations[i2]);
-        for (i2 = 0; i2 < size; i2++)
-        {
-            printf("[%d]",ord[i2]);
-        }
 
         copy_array(ord, array, size);
         res = shell_sort(ord,size);
@@ -75,11 +64,6 @@ int main(void)
         for(i2 = 0; i2 < res.ext_iterations; i2++)
             printf("\t\tIterazione %d: %hhu iterazioni nel ciclo interno.\n",
                    i2 + 1,res.int_iterations[i2]);
-        for (i2 = 0; i2 < size; i2++)
-        {
-            printf("[%d]",ord[i2]);
-        }
-        fputc('\n',stdout);
     }
     return 0;
 }
