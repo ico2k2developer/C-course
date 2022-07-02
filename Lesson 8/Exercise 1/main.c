@@ -25,8 +25,11 @@ typedef matrix* matrixp;
 void leggiMatrice(unsigned char M[MAX_MATRIX_ROWS][MAX_MATRIX_COLS],unsigned char MAXR,
                   unsigned char* nr,unsigned char* nc);
 
-unsigned char calculateBase(matrixp m, coord c);
-unsigned char calculateHeight(matrixp m, coord c);
+unsigned char riconosciRegione(unsigned char M[MAX_MATRIX_ROWS][MAX_MATRIX_COLS],
+                               unsigned char nr,unsigned char nc,
+                               unsigned char r,unsigned char c,
+                               unsigned char* b,unsigned char* h);
+
 coord findMaxBase(matrixp m);
 coord findMaxHeight(matrixp m);
 coord findMaxArea(matrixp m);
@@ -41,44 +44,27 @@ int main(void)
     unsigned char base,height;
 
     result = findMaxBase(&m);
-    base = calculateBase(&m,result);
-    height = calculateHeight(&m,result);
+    riconosciRegione(m.matrix,m.size.row,m.size.col,result.row,result.col,&base,&height);
     printf("Max Base:\testr. sup. SX=<%hhu,%hhu> b=%hhu, h=%hhu, Area=%d\n",
            result.row,result.col,
            base,height,
            base * height);
 
     result = findMaxArea(&m);
-    base = calculateBase(&m,result);
-    height = calculateHeight(&m,result);
+    riconosciRegione(m.matrix,m.size.row,m.size.col,result.row,result.col,&base,&height);
     printf("Max Area:\testr. sup. SX=<%hhu,%hhu> b=%hhu, h=%hhu, Area=%d\n",
            result.row,result.col,
            base,height,
            base * height);
 
     result = findMaxHeight(&m);
-    base = calculateBase(&m,result);
-    height = calculateHeight(&m,result);
+    riconosciRegione(m.matrix,m.size.row,m.size.col,result.row,result.col,&base,&height);
     printf("Max Altezza:\testr. sup. SX=<%hhu,%hhu> b=%hhu, h=%hhu, Area=%d\n",
            result.row,result.col,
            base,height,
            base * height);
 
     return 0;
-}
-
-unsigned char calculateBase(matrixp m, coord c)
-{
-    unsigned char i;
-    for(i = c.col; i < m->size.col && m->matrix[c.row][i] == MATRIX_BLACK; i++);
-    return i - c.col;
-}
-
-unsigned char calculateHeight(matrixp m, coord c)
-{
-    unsigned char i;
-    for(i = c.row; i < m->size.row && m->matrix[i][c.col] == MATRIX_BLACK; i++);
-    return i - c.row;
 }
 
 coord findMaxBase(matrixp m)
@@ -156,8 +142,10 @@ coord findMaxArea(matrixp m)
         {
             if(m->matrix[i.row][i.col] == MATRIX_BLACK)
             {
-                base = calculateBase(m,i);
-                area = base * calculateHeight(m, i);
+                //base = calculateBase(m,i);
+                //area = base * calculateHeight(m, i);
+                riconosciRegione(m->matrix,m->size.row,m->size.col,i.row,i.col,&base,&area);
+                area *= base;
                 if(area > max)
                 {
                     max = area;
@@ -202,4 +190,29 @@ void leggiMatrice(unsigned char M[MAX_MATRIX_ROWS][MAX_MATRIX_COLS],unsigned cha
         }
     }
     fclose(file);
+}
+
+unsigned char riconosciRegione(unsigned char M[MAX_MATRIX_ROWS][MAX_MATRIX_COLS],
+                               unsigned char nr,unsigned char nc,
+                               unsigned char r,unsigned char c,
+                               unsigned char* b,unsigned char* h)
+{
+    *b = 0;
+    *h = 0;
+    if(M[r][c] == MATRIX_BLACK)
+    {
+        unsigned char i;
+        for(i = c; i < nc && M[r][i] == MATRIX_BLACK; i++);
+        *b = i - c;
+        for(i = r; i < nr && M[i][c] == MATRIX_BLACK; i++);
+        *h =  i - r;
+        if(*b != 0 && *h != 0)
+        {
+            return 1;
+        }
+        else
+            return 0;
+    }
+    else
+        return 0;
 }
