@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.22)
+
+add_subdirectory("Exercise 1")
+add_subdirectory("Exercise 2")
+add_subdirectory("Exercise 3")
+add_subdirectory("Exercise 4")
+add_subdirectory("Exercise 5")
+add_subdirectory("Exercise 6")
+add_subdirectory("Exercise 7")
+add_subdirectory("Exercise 8")
+add_subdirectory("Exercise 9")
+add_subdirectory("Exercise 10")
+add_subdirectory("Exercise 11")
