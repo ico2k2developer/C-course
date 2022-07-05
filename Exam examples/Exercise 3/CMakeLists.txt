@@ -1,4 +1,4 @@
 cmake_minimum_required(VERSION 3.22)
-project(ExamExercise03 C)
+project(ExamExamplesExercise3 C)
 
-add_executable(ExamExercise03 main.c)
+add_executable(ExamExamplesExercise3 main.c)

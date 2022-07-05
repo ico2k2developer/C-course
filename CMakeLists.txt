@@ -13,3 +13,5 @@ add_subdirectory("Lesson 7")
 add_subdirectory("Lesson 8")
 
 add_subdirectory("Exam examples")
+
+add_subdirectory("Exam")
